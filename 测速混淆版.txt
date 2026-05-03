@@ -1,0 +1,80 @@
+/**
+ * 🌿 Environment Protection Project - Obfuscated Version
+ * Based on original Worker logic
+ */
+
+const _0x5a21 = [
+    'text/html;charset=UTF-8', 'pathname', 'substring', 'locations', 
+    'match', 'toLowerCase', 'https://speed.cloudflare.com/__down?bytes=', 
+    'referer', 'https://speed.cloudflare.com/', 'application/json',
+    'Africa', 'Asia Pacific', 'Europe', 'Middle East', 'North America', 
+    'Oceania', 'South America', 'https://speed.cloudflare.com/locations'
+];
+
+const _0x4f12 = (idx) => _0x5a21[idx];
+
+// 环保伪装页十六进制压缩版
+const _0x1a2b = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>每一片绿叶都值得守护</title><style>body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:#1a2a1a;color:#a8d5a2;font-family:serif;text-align:center;background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200');background-size:cover;backdrop-filter:blur(10px)} .c{padding:30px;border:1px solid rgba(168,213,162,0.3);background:rgba(0,0,0,0.4);border-radius:8px;max-width:500px}h1{letter-spacing:5px;font-weight:300}</style></head><body><div class="c"><h1>保护环境</h1><p>万物生长，皆有灵性。我们致力于记录并守护这片森林。</p><p style="font-style:italic;opacity:0.7">"The best time to plant a tree was 20 years ago. The second best time is now."</p></div></body></html>`;
+
+export default {
+    async fetch(_0x221a) {
+        const _0x33b1 = new URL(_0x221a.url);
+        const _0x11c2 = _0x33b1[_0x4f12(1)][_0x4f12(2)](1); // path
+
+        // 根路径伪装
+        if (_0x11c2 === '') {
+            return new Response(_0x1a2b, { headers: { 'Content-Type': _0x4f12(0) } });
+        }
+
+        // 节点查询混淆逻辑
+        if (_0x11c2 === _0x4f12(3)) {
+            return _0x3f99(_0x221a);
+        }
+
+        // 测速匹配逻辑[cite: 1]
+        const _0x99a1 = _0x11c2[_0x4f12(4)](/^(\d+)([a-z]{0,2})$/i);
+        if (_0x99a1) {
+            const _0x77b2 = parseInt(_0x99a1[1], 10);
+            const _0x88c3 = _0x99a1[2][_0x4f12(5)]();
+            const _0x22d4 = { 'k': 1e3, 'kb': 1e3, 'm': 1e6, 'mb': 1e6, 'g': 1e9, 'gb': 1e9 };
+            const _0x55e5 = _0x77b2 * (_0x22d4[_0x88c3] || 1);
+
+            const _0x11f6 = _0x4f12(6) + _0x55e5;
+            const _0x66g7 = new Headers(_0x221a.headers);
+            _0x66g7.set(_0x4f12(7), _0x4f12(8));
+
+            return fetch(new Request(_0x11f6, {
+                method: _0x221a.method,
+                headers: _0x66g7,
+                body: _0x221a.body
+            }));
+        }
+
+        // 兜底伪装
+        return new Response(_0x1a2b, { headers: { 'Content-Type': _0x4f12(0) } });
+    }
+};
+
+async function _0x3f99(_0x44a1) {
+    const _0x12b2 = await fetch(_0x4f12(17), {
+        headers: { [_0x4f12(7)]: _0x4f12(8) }
+    });
+    const _0x55c3 = await _0x12b2.json();
+
+    const _0x22d4 = {
+        [_0x4f12(10)]: '非洲', [_0x4f12(11)]: '亚洲', [_0x4f12(12)]: '欧洲',
+        [_0x4f12(13)]: '中东', [_0x4f12(14)]: '北美洲', [_0x4f12(15)]: '大洋洲', [_0x4f12(16)]: '南美洲'
+    };
+
+    // 城市映射表简易混淆[cite: 1]
+    const _0x88e5 = { 'Hong Kong': '香港', 'Tokyo': '东京', 'Singapore': '新加坡', 'Los Angeles': '洛杉矶' };
+
+    _0x55c3.forEach(_0x99f6 => {
+        _0x99f6.region = _0x22d4[_0x99f6.region] || _0x99f6.region;
+        _0x99f6.city = _0x88e5[_0x99f6.city] || _0x99f6.city;
+    });
+
+    return new Response(JSON.stringify(_0x55c3, null, 4), {
+        headers: { 'Content-Type': _0x4f12(9) }
+    });
+}

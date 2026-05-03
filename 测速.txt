@@ -1,0 +1,138 @@
+// 环保主题伪装页 HTML 模板
+const DISGUISE_HTML = `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每一个绿色行动都很有意义 - 环境保护计划</title>
+    <style>
+        :root {
+            --primary-green: #2d5a27;
+            --soft-white: #f5f5f5;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop'); /* 森林背景图 */
+            background-size: cover;
+            background-position: center;
+            font-family: 'Noto Serif SC', serif;
+            color: var(--soft-white);
+            overflow: hidden;
+        }
+        /* 胶片感模糊遮罩 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px); /* 你喜欢的模糊效果 */
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(45, 90, 39, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+        .quote {
+            margin-top: 30px;
+            font-style: italic;
+            color: #a8d5a2;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="content">
+        <h1>保护环境</h1>
+        <p>我们并非继承了父辈的地球，而是向子孙后代借用了它。</p>
+        <p>每一份坚持，都在为地球的未来加注绿色能量。感谢您关注环境保护事业。</p>
+        <div class="quote">“树木的生长需要时间，保护它们只需要一刻。”</div>
+    </div>
+</body>
+</html>
+`;
+
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const path = url.pathname.substring(1);
+
+    // 1. 根路径或无效路径返回环保伪装页
+    if (path === "") {
+      return new Response(DISGUISE_HTML, {
+        headers: { "Content-Type": "text/html;charset=UTF-8" },
+      });
+    }
+
+    // 2. 原有的 locations 逻辑
+    if (path === "locations") {
+      return locations_cn(request);
+    }
+
+    // 3. 原有的测速逻辑
+    const match = path.match(/^(\d+)([a-z]{0,2})$/i);
+    if (match) {
+      const size = parseInt(match[1], 10);
+      const unit = match[2].toLowerCase();
+      const multipliers = {
+        'k': 1000, 'kb': 1000,
+        'm': 1000000, 'mb': 1000000,
+        'g': 1000000000, 'gb': 1000000000
+      };
+      const bytes = size * (multipliers[unit] || 1);
+
+      const targetUrl = `https://speed.cloudflare.com/__down?bytes=${bytes}`;
+      const headers = new Headers(request.headers);
+      headers.set('referer', 'https://speed.cloudflare.com/');
+
+      return fetch(new Request(targetUrl, {
+        method: request.method,
+        headers: headers,
+        body: request.body
+      }));
+    }
+
+    // 4. 所有其他路径也返回伪装页，确保安全性
+    return new Response(DISGUISE_HTML, {
+      headers: { "Content-Type": "text/html;charset=UTF-8" },
+    });
+  }
+};
+
+// ... 保持 locations_cn 函数部分完全不变[cite: 1] ...
+async function locations_cn(request) {
+  const response = await fetch('https://speed.cloudflare.com/locations', {
+    headers: { 'referer': 'https://speed.cloudflare.com/' }
+  });
+  const locations = await response.json();
+  // ... 映射逻辑与之前一致[cite: 1] ...
+  return new Response(JSON.stringify(locations, null, 4), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
